@@ -1,4 +1,4 @@
-package com.shubham.www.dao;
+package com.shubham.www.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

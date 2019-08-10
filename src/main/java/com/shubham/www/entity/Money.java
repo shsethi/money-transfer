@@ -1,4 +1,4 @@
-package com.shubham.www.dao;
+package com.shubham.www.entity;
 
 import lombok.Getter;
 
@@ -68,7 +68,14 @@ public final class Money implements Comparable<Money>, Serializable {
         return amount.compareTo(ZERO) == 0;
     }
 
-
+    public Money plus(Money that) {
+        matchCurrencies(that);
+        return new Money(amount.add(that.amount), currency);
+    }
+    public Money minus(Money that){
+        matchCurrencies(that);
+        return new Money(amount.subtract(that.amount), currency);
+    }
 
     public boolean isEqual(Money that) {
         matchCurrencies(that);

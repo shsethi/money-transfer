@@ -1,6 +1,6 @@
 package com.shubham.www.controller;
 
-import com.shubham.www.dao.BuildInfo;
+import com.shubham.www.entity.BuildInfo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
