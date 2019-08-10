@@ -1,36 +1,20 @@
 package com.shubham.www.dao;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author shsethi
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class BuildInfo {
-
+    @Getter
+    @Setter
     private String status;
-
-    public BuildInfo() {
-    }
-
+    @Getter
+    @Setter
     private String version;
-
-    public BuildInfo(String status, String version) {
-        this.status = status;
-        this.version = version;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }
