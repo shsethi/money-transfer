@@ -1,5 +1,6 @@
 package com.shubham.www.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -36,6 +37,9 @@ public final class Money implements Comparable<Money>, Serializable {
         return new Money(number, DEFAULT_CURRENCY);
     }
 
+    public static Money of(double number, Currency currencyCode) {
+        return new Money(BigDecimal.valueOf(number), currencyCode);
+    }
     public static Money of(double number) {
         return new Money(BigDecimal.valueOf(number), DEFAULT_CURRENCY);
     }
@@ -44,8 +48,8 @@ public final class Money implements Comparable<Money>, Serializable {
         return new Money(number, Currency.getInstance(currencyCode));
     }
 
-    public static Money of(double number, String currencyCode) {
-        return new Money(BigDecimal.valueOf(number), Currency.getInstance(currencyCode));
+    public static Money of(BigDecimal number, Currency currencyCode) {
+        return new Money(number, currencyCode);
     }
 
     public static Money zero() {
@@ -60,10 +64,11 @@ public final class Money implements Comparable<Money>, Serializable {
         return result;
     }
 
+    @JsonIgnore
     public boolean isPositive() {
         return amount.compareTo(ZERO) > 0;
     }
-
+    @JsonIgnore
     public boolean isZero() {
         return amount.compareTo(ZERO) == 0;
     }
@@ -72,7 +77,8 @@ public final class Money implements Comparable<Money>, Serializable {
         matchCurrencies(that);
         return new Money(amount.add(that.amount), currency);
     }
-    public Money minus(Money that){
+
+    public Money minus(Money that) {
         matchCurrencies(that);
         return new Money(amount.subtract(that.amount), currency);
     }
@@ -86,6 +92,7 @@ public final class Money implements Comparable<Money>, Serializable {
         matchCurrencies(that);
         return compareAmount(that) > 0;
     }
+
     public boolean isLessThan(Money that) {
         matchCurrencies(that);
         return compareAmount(that) < 0;
@@ -144,10 +151,10 @@ public final class Money implements Comparable<Money>, Serializable {
         }
     }
 
-    public boolean equals(Object second){
+    public boolean equals(Object second) {
         if (this == second) return true;
-        if (! (second instanceof Money) ) return false;
-        Money that = (Money)second;
+        if (!(second instanceof Money)) return false;
+        Money that = (Money) second;
         return Objects.equals(this.amount, that.amount) && Objects.equals(this.currency, that.currency);
     }
 

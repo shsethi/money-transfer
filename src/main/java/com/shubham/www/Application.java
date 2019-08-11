@@ -1,15 +1,60 @@
 package com.shubham.www;
 
+import com.shubham.www.dao.AccountDAO;
+import com.shubham.www.dao.DAOManager;
+import com.shubham.www.dao.StoreType;
+import com.shubham.www.entity.Account;
+import com.shubham.www.entity.AccountNumber;
+import com.shubham.www.persistance.InMemoryStore;
+import com.shubham.www.exceptions.AccountDoesNotExistException;
+import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import java.util.Currency;
+
 /**
  * @author shsethi
  */
 public class Application {
+
+
+    private static Logger log = Logger.getLogger(Application.class);
+
     public static void main(String[] args) throws Exception {
+        bankInit();
+        serverInit();
+    }
+
+    private static void bankInit() {
+
+        final DAOManager daoManager = DAOManager.getDAOManager(StoreType.IN_MEMORY);
+
+        InMemoryStore store = (InMemoryStore) daoManager.getMemoryStore();
+        AccountDAO accountDAO = daoManager.getAccountDAO();
+
+        AccountNumber acc1 = store.addAccount(new Account("James", Currency.getInstance("USD")));
+        AccountNumber acc2 = store.addAccount(new Account("Paul", Currency.getInstance("USD")));
+
+        try {
+            accountDAO.addMoney(acc1, 500, Currency.getInstance("USD"));
+            accountDAO.addMoney(acc1, 400, Currency.getInstance("USD"));
+            accountDAO.addMoney(acc1, 100, Currency.getInstance("INR"));
+
+            accountDAO.getAccountBalance(acc1);
+
+            store.transfer(acc1, acc2, 200, Currency.getInstance("USD"));
+
+        } catch (AccountDoesNotExistException e) {
+            log.info(e);
+        }
+
+
+    }
+
+    private static void serverInit() {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
 
@@ -27,7 +72,7 @@ public class Application {
             jettyServer.join();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally{
+        } finally {
             jettyServer.destroy();
         }
     }
