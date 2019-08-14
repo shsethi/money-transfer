@@ -6,6 +6,7 @@ import com.shubham.www.entity.Account;
 import com.shubham.www.entity.AccountNumber;
 import com.shubham.www.entity.Money;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
+import com.shubham.www.exceptions.InValidAccountNumException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * @author shsethi
  */
-@Path("/account")
+@Path("/v1/account")
 public class AccountController {
 
     private final DAOManager daoManager = DAOManager.getDAOManager(StoreType.IN_MEMORY);
@@ -39,8 +40,8 @@ public class AccountController {
             AccountNumber accountNumber = new AccountNumber(accountNum);
             Account account = daoManager.getBankDAO().getAccountByNumber(new AccountNumber(accountNum));
             return Response.ok().entity(account).build();
-        } catch (IllegalArgumentException | AccountDoesNotExistException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+        } catch (InValidAccountNumException | AccountDoesNotExistException  e ) {
+            return Response.serverError().entity(e).build();
         }
     }
 
@@ -53,8 +54,8 @@ public class AccountController {
         try {
             Map<Currency, Money> balance = daoManager.getAccountDAO().getAccountBalance(new AccountNumber(accountNum));
             return Response.ok().entity(balance).build();
-        } catch (AccountDoesNotExistException e) {
-            return Response.serverError().entity(e.getMessage()).build();
+        } catch (AccountDoesNotExistException | InValidAccountNumException e) {
+            return Response.serverError().entity(e.toString()).build();
         }
     }
 }

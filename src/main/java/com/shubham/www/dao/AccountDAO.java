@@ -3,6 +3,7 @@ package com.shubham.www.dao;
 import com.shubham.www.entity.AccountNumber;
 import com.shubham.www.entity.Money;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
+import com.shubham.www.exceptions.InSufficientBalanceException;
 
 import java.util.Currency;
 import java.util.Map;
@@ -16,5 +17,5 @@ public interface AccountDAO {
 
     void addMoney(AccountNumber accNum, double m, Currency currency) throws AccountDoesNotExistException;
 
-    void withdrawMoney(AccountNumber accNum, double m, Currency currency) throws AccountDoesNotExistException ;
+    void withdrawMoney(AccountNumber accNum, double m, Currency currency) throws AccountDoesNotExistException, InSufficientBalanceException;
 }

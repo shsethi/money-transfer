@@ -1,8 +1,11 @@
 package com.shubham.www.exceptions;
 
-public final class AccountDoesNotExistException extends Exception {
-    public AccountDoesNotExistException(String message) {
-        super("Account doesn't exist");
+/**
+ * @author shsethi
+ */
+public class InValidAccountNumException extends Exception {
+    public InValidAccountNumException(String message) {
+        super(message);
     }
 
     @Override

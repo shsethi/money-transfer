@@ -3,8 +3,11 @@ package com.shubham.www.dao.in_memory;
 import com.shubham.www.dao.BankDAO;
 import com.shubham.www.entity.Account;
 import com.shubham.www.entity.AccountNumber;
-import com.shubham.www.persistance.InMemoryStore;
+import com.shubham.www.entity.TransactionReq;
+import com.shubham.www.entity.TransactionResult;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
+import com.shubham.www.exceptions.InSufficientBalanceException;
+import com.shubham.www.persistance.InMemoryStore;
 
 import java.util.List;
 
@@ -26,5 +29,11 @@ public class BankDaoInMemoryImpl implements BankDAO {
     @Override
     public List<Account> getAllAccounts() {
         return memoryStore.getAllAccount();
+    }
+
+
+    @Override
+    public TransactionResult transact(TransactionReq transactionReq) throws AccountDoesNotExistException, InSufficientBalanceException {
+        return memoryStore.transfer(transactionReq.getSender(), transactionReq.getReceiver(), transactionReq.getAmount(), transactionReq.getCurrency());
     }
 }

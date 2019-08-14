@@ -25,5 +25,11 @@ public class Account {
         this.name = name;
         this.defaultCurrency = defaultCurrency;
     }
+    public Account(String name, Currency defaultCurrency, AccountNumber accountNumber) {
+
+        this.accountNumber = accountNumber;
+        this.name = name;
+        this.defaultCurrency = defaultCurrency;
+    }
 
 }

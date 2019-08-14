@@ -2,6 +2,7 @@ package com.shubham.www.dao.in_memory;
 
 import com.shubham.www.dao.AccountDAO;
 import com.shubham.www.entity.AccountNumber;
+import com.shubham.www.exceptions.InSufficientBalanceException;
 import com.shubham.www.persistance.InMemoryStore;
 import com.shubham.www.entity.Money;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
@@ -32,7 +33,7 @@ public class AccountDaoInMemoryImpl implements AccountDAO {
     }
 
     @Override
-    public void withdrawMoney(AccountNumber accNum, double m, Currency currency) throws AccountDoesNotExistException {
+    public void withdrawMoney(AccountNumber accNum, double m, Currency currency) throws AccountDoesNotExistException, InSufficientBalanceException {
         memoryStore.withDrawMoney(accNum,Money.of(m, currency), currency);
     }
 }

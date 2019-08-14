@@ -6,6 +6,7 @@ import com.shubham.www.entity.Money;
 import com.shubham.www.entity.TransactionResult;
 import com.shubham.www.entity.TransactionStatus;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
+import com.shubham.www.exceptions.InSufficientBalanceException;
 
 import java.util.ArrayList;
 import java.util.Currency;
@@ -64,6 +65,9 @@ final public class InMemoryStore extends Store {
 
     public void addMoney(AccountNumber accNum, Money money, Currency currency) throws AccountDoesNotExistException {
         Map<Currency, Money> wallet = walletStore.get(accNum);
+        if (wallet == null) {
+            throw new AccountDoesNotExistException("Account doesn't exist for account number " + accNum);
+        }
         wallet.compute(currency, (curr, value) -> {
             if (value == null) {
                 return money;
@@ -74,23 +78,30 @@ final public class InMemoryStore extends Store {
     }
 
 
-    public void withDrawMoney(AccountNumber accNum, Money money, Currency currency) throws AccountDoesNotExistException {
+    public void withDrawMoney(AccountNumber accNum, Money money, Currency currency) throws AccountDoesNotExistException, InSufficientBalanceException {
         Map<Currency, Money> wallet = walletStore.get(accNum);
 
-        wallet.compute(currency, (curr, value) -> {
-            if (value == null) {
-                return money;
-            } else {
-                return value.minus(money);
-            }
-        });
+        if (wallet == null) {
+            throw new AccountDoesNotExistException("Account doesn't exist for account number = " + accNum);
+        }
+
+        Money value = wallet.get(currency);
+        if (value == null || value.isLessThan(money)) {
+            throw new InSufficientBalanceException("In-sufficient balance in accNum = " + accNum);
+        } else {
+            wallet.put(currency, value.minus(money));
+        }
     }
 
 
-    public TransactionResult transfer(AccountNumber sender, AccountNumber receiver, double amount, Currency currency) throws AccountDoesNotExistException {
+    public TransactionResult transfer(AccountNumber sender, AccountNumber receiver, double amount, Currency currency) {
 
-        withDrawMoney(sender, Money.of(amount, currency), currency);
-        addMoney(receiver, Money.of(amount, currency), currency);
+        try {
+            withDrawMoney(sender, Money.of(amount, currency), currency);
+            addMoney(receiver, Money.of(amount, currency), currency);
+        } catch (AccountDoesNotExistException | InSufficientBalanceException e) {
+            return new TransactionResult(TransactionStatus.FAILURE, e.getMessage());
+        }
         return new TransactionResult(TransactionStatus.SUCCESS, "Money transfer from account " + sender + " to " + receiver + " complete");
     }
 

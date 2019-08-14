@@ -1,5 +1,6 @@
 package com.shubham.www.entity;
 
+import com.shubham.www.exceptions.InValidAccountNumException;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -10,12 +11,12 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class AccountNumber {
 
-    private static int START;
-    private static int END;
+    private final static int START = 10_000_000;
+    private final static int END = 100_000_000;
     @Getter
     private long accountId;
 
-    public AccountNumber(long accountId) {
+    public AccountNumber(long accountId) throws InValidAccountNumException {
         isValid(accountId);
         this.accountId = accountId;
     }
@@ -29,9 +30,12 @@ public class AccountNumber {
         return Long.toString(this.accountId);
     }
 
-    private void isValid(long num) {
+    private void isValid(long num) throws InValidAccountNumException {
+        if(num==0){
+            throw new InValidAccountNumException("Account number missing");
+        }
         if (!(num > START && num < END)) {
-            throw new IllegalArgumentException("Invalid account number");
+            throw new InValidAccountNumException("Invalid account number");
         }
     }
 
@@ -41,8 +45,6 @@ public class AccountNumber {
      * @return the long
      */
     public static long generateAccountId() {
-        START = 10_000_000;
-        END = 100_000_000;
         return ThreadLocalRandom.current().nextLong(START, END);
     }
 
