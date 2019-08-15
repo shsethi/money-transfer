@@ -2,13 +2,17 @@
 
 #Money Transfer API
 
-- Objects of Money class which are *immutable*
+- App exposed endpoints to create account, add/withdraw money and transfer money from one account to another
+- Transfer of money is takes lock on both the accounts to ensure thread safety
+- Representing amount held by each account as objects of Money class which are *immutable*
 
-###Dependencies
-- used `lombok` to avoid writing broiler plate code
 
-###Assumptions
+###Assumptions and Simplification
 
+- In-memory datastore
+- All the apis are synchronous / blocking
+- Each account can hold  multiple currencies
+- Ignored currency conversion
 
 
 ##Pre-requisites
@@ -30,3 +34,7 @@ This packages the java project into jar and runs tests.
 ```
 $ bin/money_transfer
 ```
+
+
+###Dependencies
+- used `lombok` to avoid writing broiler plate code

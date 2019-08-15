@@ -3,7 +3,7 @@ package com.shubham.www.exceptions;
 /**
  * @author shsethi
  */
-public class InValidAccountNumException extends Exception {
+public class InValidAccountNumException extends RuntimeException {
     public InValidAccountNumException(String message) {
         super(message);
     }
