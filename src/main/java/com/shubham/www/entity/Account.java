@@ -3,6 +3,8 @@ package com.shubham.www.entity;
 import lombok.Getter;
 
 import java.util.Currency;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author shsethi
@@ -18,6 +20,9 @@ public class Account {
 
     @Getter
     private Currency defaultCurrency;
+
+    @Getter
+    private Map<Currency, Money> wallet = new HashMap<>();
 
     public Account(String name, Currency defaultCurrency) {
 

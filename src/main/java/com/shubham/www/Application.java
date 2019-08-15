@@ -15,6 +15,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import java.util.Currency;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author shsethi
@@ -39,19 +41,28 @@ public class Application {
 
         try {
             AccountNumber acc1 = store.addAccount(new Account("James", Currency.getInstance("USD"), new AccountNumber(99_999_999)));
-            AccountNumber acc2 = store.addAccount(new Account("Paul", Currency.getInstance("USD"),new AccountNumber(22_999_999)));
+            AccountNumber acc2 = store.addAccount(new Account("Paul", Currency.getInstance("USD"), new AccountNumber(22_999_999)));
 
 
-            accountDAO.addMoney(acc1, 500, Currency.getInstance("USD"));
             accountDAO.addMoney(acc1, 400, Currency.getInstance("USD"));
             accountDAO.addMoney(acc1, 100, Currency.getInstance("INR"));
 
             accountDAO.getAccountBalance(acc1);
 
-            //store.transfer(acc1, acc2, 200, Currency.getInstance("USD"));
+            ExecutorService executor = Executors.newFixedThreadPool(2);
+
+            executor.submit(()->{
+                log.info(store.transfer(acc1, acc2, 200, Currency.getInstance("USD")));
+            });
+            executor.submit(()->{
+                log.info(store.transfer(acc2, acc1, 200, Currency.getInstance("USD")));
+            });
+            executor.submit(()->{
+                log.info(store.transfer(acc1, acc2, 200, Currency.getInstance("USD")));
+            });
 
         } catch (AccountDoesNotExistException | InValidAccountNumException e) {
-            log.info(e);
+            log.error(e);
         }
 
 

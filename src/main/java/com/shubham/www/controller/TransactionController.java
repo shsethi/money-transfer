@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
  * @author shsethi
  */
 
-@Path("/v1/transaction")
+@Path("/v1/transfer")
 public class TransactionController {
 
     private final DAOManager daoManager = DAOManager.getDAOManager(StoreType.IN_MEMORY);
@@ -29,8 +29,13 @@ public class TransactionController {
             TransactionResult transactionResult = daoManager.getBankDAO().transact(transaction);
             return Response.ok().entity(transactionResult).build();
 
-        } catch (Exception  e) {
-            return Response.serverError().entity(e.getMessage()).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(convertToJson(e)).build();
         }
+    }
+
+
+    private String convertToJson(Exception e) {
+        return "{ \"error\" : { \"message\":" + "\"" + e.getMessage() + "\"" + "} }";
     }
 }

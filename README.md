@@ -2,6 +2,10 @@
 
 #Money Transfer API
 
+- Objects of Money class which are *immutable*
+
+###Dependencies
+- used `lombok` to avoid writing broiler plate code
 
 ###Assumptions
 
@@ -23,7 +27,6 @@ This packages the java project into jar and runs tests.
 
 ##Run
 
-The project can be run in two modes:
 ```
 $ bin/money_transfer
 ```
