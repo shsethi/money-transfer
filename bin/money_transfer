@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "API live at http://localhost:8080"
+echo "API live at http://localhost:8080/v1/account/all"
 
 mvn exec:java
 

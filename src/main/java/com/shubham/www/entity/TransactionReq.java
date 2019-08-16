@@ -23,4 +23,6 @@ public class TransactionReq {
     double amount;
     @JsonProperty(required = true)
     Currency currency;
+
+    long requestTimeStamp = System.currentTimeMillis();
 }

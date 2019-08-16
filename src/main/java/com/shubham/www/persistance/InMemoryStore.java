@@ -114,8 +114,17 @@ final public class InMemoryStore extends Store {
             if (receiverAccount == null) {
                 throw new AccountDoesNotExistException("Account doesn't exist for account number " + receiverAccount);
             }
-            synchronized (senderAccount) {
-                synchronized (receiverAccount) {
+
+            Account first = senderAccount;
+            Account second = receiverAccount;
+
+            if(sender.getAccountId() > receiver.getAccountId() ){
+                first = receiverAccount;
+                second = senderAccount;
+            }
+
+            synchronized (first) {
+                synchronized (second) {
                     withDrawMoney(sender, Money.of(amount, currency), currency);
                     addMoney(receiver, Money.of(amount, currency), currency);
                 }

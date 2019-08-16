@@ -47,6 +47,6 @@ public class MoneyTest {
 
 
         Assert.assertTrue("Negative money should be less than zero", negative.isLessThan(zero));
-        Assert.assertTrue("Postive money should be more than zero", postive.isGreaterThan(zero));
+        Assert.assertTrue("Positive money should be more than zero", postive.isGreaterThan(zero));
     }
 }

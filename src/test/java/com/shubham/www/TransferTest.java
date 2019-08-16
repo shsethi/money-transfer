@@ -20,7 +20,7 @@ import java.util.Currency;
 /**
  * @author shsethi
  */
-public class MoneyTransferTest {
+public class TransferTest {
 
 
     private AccountNumber senderAccount;
@@ -45,7 +45,7 @@ public class MoneyTransferTest {
     public void transferSuccessTest() throws AccountDoesNotExistException {
         TransactionResult transactionResult = store.transfer(senderAccount, receiverAccount, 200, Currency.getInstance("USD"));
         Assert.assertEquals("Transaction should succeed for valid account number", TransactionStatus.SUCCESS, transactionResult.getStatus());
-        Assert.assertEquals("Addition invalid", Money.of(200), store.getBalance(receiverAccount).get(Currency.getInstance("USD")));
+        Assert.assertEquals("Reviever  should receive sent amount", Money.of(200), store.getBalance(receiverAccount).get(Currency.getInstance("USD")));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class MoneyTransferTest {
     @Test
     public void transferFailInvalidCurrency() {
         TransactionResult transactionResult = store.transfer(senderAccount, receiverAccount, 200, Currency.getInstance("EUR"));
-        Assert.assertEquals("Transaction should fail for invalid currency", TransactionStatus.FAILURE, transactionResult.getStatus());
+        Assert.assertEquals("Transaction should fail for non existent currency", TransactionStatus.FAILURE, transactionResult.getStatus());
     }
 
     @Test(expected = IllegalArgumentException.class)

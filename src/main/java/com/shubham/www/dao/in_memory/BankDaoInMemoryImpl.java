@@ -8,6 +8,7 @@ import com.shubham.www.entity.TransactionResult;
 import com.shubham.www.exceptions.AccountDoesNotExistException;
 import com.shubham.www.exceptions.InSufficientBalanceException;
 import com.shubham.www.persistance.InMemoryStore;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author shsethi
  */
 public class BankDaoInMemoryImpl implements BankDAO {
+    private static Logger log = Logger.getLogger(BankDaoInMemoryImpl.class);
     private InMemoryStore memoryStore;
 
     public BankDaoInMemoryImpl(InMemoryStore memoryStore) {
@@ -34,6 +36,7 @@ public class BankDaoInMemoryImpl implements BankDAO {
 
     @Override
     public TransactionResult transact(TransactionReq transactionReq) throws AccountDoesNotExistException, InSufficientBalanceException {
+        log.info(transactionReq);
         return memoryStore.transfer(transactionReq.getSender(), transactionReq.getReceiver(), transactionReq.getAmount(), transactionReq.getCurrency());
     }
 }
