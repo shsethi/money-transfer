@@ -1,12 +1,12 @@
 
 
-#Money Transfer API
+# Money Transfer API
 
 - App exposes endpoints to create account, add/withdraw money and transfer money from one account to another
 - Transfer of money takes lock on both the accounts to ensure thread safety and in ordered of increasing account number to prevent deadlock
 - Representing amount held by each account as objects of Money class which are *immutable*
 
-##Sample request
+## Sample request
 
 - get all accounts
     ```
@@ -33,7 +33,7 @@
     }'
     ```
 
-###Assumptions and Simplification
+### Assumptions and Simplification
 
 - In-memory datastore, extensible to other datastore
 - All the apis are synchronous / blocking
@@ -41,12 +41,12 @@
 - Ignored currency conversion
 
 
-##Pre-requisites
+## Pre-requisites
 
 - Install `maven` to build the project
 
 
-##Build
+## Build
 
 To build the project execute following
 ```
@@ -55,12 +55,12 @@ $ bin/setup
 
 This packages the java project into jar and runs tests.
 
-##Run
+## Run
 
 ```
 $ bin/money_transfer
 ```
 
 
-###Dependencies
+### Dependencies
 - used `lombok` to avoid writing broiler plate code
