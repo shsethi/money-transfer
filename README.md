@@ -61,6 +61,5 @@ This packages the java project into jar and runs tests.
 $ bin/money_transfer
 ```
 
-
 ### Dependencies
 - used `lombok` to avoid writing broiler plate code
